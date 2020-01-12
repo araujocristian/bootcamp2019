@@ -67,7 +67,6 @@ class UserController {
 
     return res.json({ id, name, email, provider });
   }
-  }
 }
 
 export default new UserController();
