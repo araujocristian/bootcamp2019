@@ -27,14 +27,49 @@ class PlanController {
   }
 
   async index(req, res) {
-    return res.json();
+    const plans = await Plan.findAll({
+      order: ['price'],
+      attributes: ['id', 'title', 'duration', 'price'],
+    });
+
+    return res.json(plans);
   }
 
   async update(req, res) {
-    return res.json();
+    const schema = Yup.object().shape({
+      title: Yup.string(),
+      duration: Yup.number(),
+      price: Yup.number(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+
+    const plan = await Plan.findByPk(req.params.id);
+
+    const { title } = req.body;
+
+    if (title) {
+      if (title !== plan.title) {
+        const planExists = await Plan.findOne({ where: { title } });
+
+        if (planExists) {
+          return res.status(400).json({ error: 'Plan already exists' });
+        }
+      }
+    }
+
+    const { title: _title, duration, price } = await plan.update(req.body);
+
+    return res.json({ title: _title, duration, price });
   }
 
   async delete(req, res) {
+    const plan = await Plan.findByPk(req.params.id);
+
+    await plan.destroy();
+
     return res.json();
   }
 }
