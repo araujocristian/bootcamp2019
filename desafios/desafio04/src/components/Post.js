@@ -9,7 +9,7 @@ const Post = ({ data }) => {
   return (
     <div className="post-container">
       <div className="post-header">
-        <div className="post-header-image" />
+        <img src={author.avatar} className="post-header-image" />
         <div className="post-header-content">
           <p className="post-header-name">{author.name}</p>
           <p className="post-header-date">{date}</p>

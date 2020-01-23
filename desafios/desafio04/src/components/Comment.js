@@ -7,10 +7,10 @@ const Comment = ({ data }) => {
   const { author, content } = data;
   return (
     <div className="comment-container">
-      <div className="comment-image" />
+      <img src={author.avatar} className="comment-image" />
       <p className="comment-content">
-        <spam className="comment-name">{`${author.name} `}</spam>
-        <spam className="comment-text">{content}</spam>
+        <span className="comment-name">{`${author.name} `}</span>
+        <span className="comment-text">{content}</span>
       </p>
     </div>
   );
