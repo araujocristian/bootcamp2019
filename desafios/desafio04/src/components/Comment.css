@@ -1,0 +1,25 @@
+.comment-container {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+
+.comment-image {
+  width: 32px;
+  height: 32px;
+  background: #fa9797;
+  border-radius: 16px;
+  margin-right: 10px;
+}
+
+.comment-content {
+  width: 91%;
+  background: #eeeeee;
+  border-radius: 20px;
+  padding: 15px;
+  font-size: 13px;
+}
+
+.comment-name {
+  font-weight: 900;
+}

@@ -22,6 +22,15 @@ class PostList extends Component {
               avatar: "http://url-da-imagem.com/imagem.jpg"
             },
             content: "Conteúdo do comentário"
+          },
+          {
+            id: 2,
+            author: {
+              name: "Fernandes Junior",
+              avatar: "http://url-da-imagem.com/imagem.jpg"
+            },
+            content:
+              "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore eos consequuntur cum harum tempore rem eveniet, reiciendis, illo et a nemo veritatis? Recusandae, officia obcaecati perspiciatis doloremque optio cum iure."
           }
         ]
       },
