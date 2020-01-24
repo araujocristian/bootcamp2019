@@ -1,5 +1,7 @@
 import * as Yup from 'yup';
-import Registration from '../models/Plan';
+import { addMonths, parseISO } from 'date-fns';
+import Registration from '../models/Registration';
+import Plan from '../models/Plan';
 
 class RegistrationController {
   async store(req, res) {
@@ -13,26 +15,47 @@ class RegistrationController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const planExists = await Registration.findOne({
-      where: { title: req.body.title },
+    const { student_id, plan_id, start_date } = req.body;
+
+    /**
+     * Check if registration exists
+     */
+
+    const registrationExists = await Registration.findOne({
+      where: { student_id },
     });
 
-    if (planExists) {
-      return res.status(400).json({ error: 'Plan already exists' });
+    if (registrationExists) {
+      return res
+        .status(400)
+        .json({ error: 'Student already has a registration' });
     }
 
-    const plan = await Registration.create(req.body);
+    /**
+     * Find Plan relative to registration
+     */
 
-    return res.json(plan);
+    const plan = await Plan.findByPk(plan_id);
+
+    const end_date = addMonths(parseISO(start_date), plan.duration);
+
+    const price = plan.price * plan.duration;
+
+    const registration = await Registration.create({
+      student_id,
+      plan_id,
+      start_date,
+      end_date,
+      price,
+    });
+
+    return res.json(registration);
   }
 
   async index(req, res) {
-    const plans = await Registration.findAll({
-      order: ['price'],
-      attributes: ['id', 'title', 'duration', 'price'],
-    });
+    const registrations = await Registration.findAll();
 
-    return res.json(plans);
+    return res.json(registrations);
   }
 
   async update(req, res) {
