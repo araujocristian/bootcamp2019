@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { FaGithubAlt, FaPlus, FaSpinner } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
 
-import { Container, Form, SubmitButton, List } from './styles';
-import { Link } from 'react-router-dom';
+import { Form, SubmitButton, List } from './styles';
+import Container from '../../Components';
 
 export default class Main extends Component {
   state = {
@@ -13,9 +14,23 @@ export default class Main extends Component {
     loading: false,
   };
 
-  handleInputChange = e => {
-    this.setState({ newRepo: e.target.value });
-  };
+  // Carregar os dados do localStorage
+  componentDidMount() {
+    const repositories = localStorage.getItem('repositories');
+
+    if (repositories) {
+      this.setState({ repositories: JSON.parse(repositories) });
+    }
+  }
+
+  // Salvar os dados no localStorage
+  componentDidUpdate(_, prevState) {
+    const { repositories } = this.state;
+
+    if (prevState.repositories !== repositories) {
+      localStorage.setItem('repositories', JSON.stringify(repositories));
+    }
+  }
 
   handleSubmit = async e => {
     e.preventDefault();
@@ -37,23 +52,9 @@ export default class Main extends Component {
     });
   };
 
-  // Carregar os dados do localStorage
-  componentDidMount() {
-    const repositories = localStorage.getItem('repositories');
-
-    if (repositories) {
-      this.setState({ repositories: JSON.parse(repositories) });
-    }
-  }
-
-  // Salvar os dados no localStorage
-  componentDidUpdate(_, prevState) {
-    const { repositories } = this.state;
-
-    if (prevState.repositories !== repositories) {
-      localStorage.setItem('repositories', JSON.stringify(repositories));
-    }
-  }
+  handleInputChange = e => {
+    this.setState({ newRepo: e.target.value });
+  };
 
   render() {
     const { newRepo, repositories, loading } = this.state;
