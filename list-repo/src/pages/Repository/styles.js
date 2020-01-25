@@ -101,3 +101,14 @@ export const IssueList = styled.ul`
     }
   }
 `;
+
+export const Selector = styled.select`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0 auto 30px auto;
+  padding: 5px;
+  border: none;
+  border-radius: 4px;
+`;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import api from '../../services/api';
 
-import { Loading, Owner, IssueList } from './styles';
+import { Loading, Owner, IssueList, Selector } from './styles';
 import Container from '../../Components';
 import { Link } from 'react-router-dom';
 
@@ -32,7 +32,7 @@ export default class Repository extends Component {
       api.get(`/repos/${repoName}`),
       api.get(`/repos/${repoName}/issues`, {
         params: {
-          state: 'open',
+          state: 'all',
           per_page: 5,
         },
       }),
@@ -44,6 +44,25 @@ export default class Repository extends Component {
       loading: false,
     });
   }
+
+  handleSelector = async e => {
+    const {
+      match: { params },
+    } = this.props;
+
+    const repoName = decodeURIComponent(params.repository);
+
+    const issues = await api.get(`/repos/${repoName}/issues`, {
+      params: {
+        state: e.target.value,
+        per_page: 5,
+      },
+    });
+
+    this.setState({
+      issues: issues.data,
+    });
+  };
 
   render() {
     const { repository, issues, loading } = this.state;
@@ -60,6 +79,11 @@ export default class Repository extends Component {
         </Owner>
 
         <IssueList>
+          <Selector onChange={this.handleSelector}>
+            <option value="all">Todos</option>
+            <option value="open">Abertos</option>
+            <option value="closed">Fechados</option>
+          </Selector>
           {issues.map(issue => (
             <li key={String(issue.id)}>
               <img src={issue.user.avatar_url} alt={issue.user.login} />
