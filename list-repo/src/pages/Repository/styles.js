@@ -112,3 +112,28 @@ export const Selector = styled.select`
   border: none;
   border-radius: 4px;
 `;
+
+export const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 30px auto 0;
+
+  button {
+    background: #7159c1;
+    border: 0;
+    padding: 10px 15px;
+    margin-left: 10px;
+    border-radius: 4px;
+
+    color: #fff;
+    font-weight: bold;
+    align-items: center;
+
+    &[disabled] {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+`;
