@@ -66,6 +66,7 @@ export default class Repository extends Component {
     this.setState({
       issueState: e.target.value,
       issues: issues.data,
+      page: 1,
     });
   };
 
